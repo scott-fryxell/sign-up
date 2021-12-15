@@ -1,37 +1,20 @@
 <template>
   <section id="sign-on" class="page">
-    <header>
-      <profile-as-figure v-if="person" :person="person">
-        <p />
-        <!-- defeat the default slot -->
-      </profile-as-figure>
-      <logo-as-link />
-    </header>
     <mobile-as-form
       v-if="person && !nameless"
       v-model:person="person"
       @signed-on="signed_on" />
     <name-as-form v-if="nameless" v-model:person="person" @valid="new_person" />
-    <footer>
-      <button v-if="cleanable" @click="clean">Wipe</button>
-    </footer>
   </section>
 </template>
 <script>
   import firebase from 'firebase/app'
   import 'firebase/auth'
-  import { keys, clear } from 'idb-keyval'
-  import { load } from '@/use/itemid'
-  import { Me } from '@/persistance/Storage'
-  import logo_as_link from '@/components/logo-as-link'
-  import profile_as_figure from '@/components/profile/as-figure'
   import mobile_as_form from '@/components/profile/as-form-mobile'
   import name_as_form from '@/components/profile/as-form-name'
   import signed_on from '@/mixins/signed_in'
   export default {
     components: {
-      'logo-as-link': logo_as_link,
-      'profile-as-figure': profile_as_figure,
       'mobile-as-form': mobile_as_form,
       'name-as-form': name_as_form
     },
@@ -39,29 +22,11 @@
     data() {
       return {
         nameless: false,
-        index_db_keys: [],
         person: null
-      }
-    },
-    computed: {
-      cleanable() {
-        if (this.signed_in) return false
-        if (localStorage.me.length > 2) return true
-        if (localStorage.length > 2) return true
-        if (this.index_db_keys.length > 0) return true
-        else return false
       }
     },
     async created() {
       console.info('views:Sign-on')
-      const person = await load(localStorage.me)
-      const new_person = {
-        id: '/+',
-        mobile: null
-      }
-      if (person) this.person = person
-      else this.person = new_person
-      this.index_db_keys = await keys()
       firebase.auth().onAuthStateChanged(this.auth_state)
     },
     methods: {
@@ -69,24 +34,7 @@
         if (user) this.person.mobile = null
       },
       async signed_on() {
-        const my_profile = await load(localStorage.me)
-        if (my_profile) this.$router.push({ path: '/' })
-        else this.nameless = true
-      },
-      async new_person() {
-        this.person.visited = new Date().toISOString()
-        this.person.id = localStorage.me
-        await this.$nextTick()
-        const me = new Me()
-        await me.save()
-        await this.$nextTick()
-        this.$router.push({ path: '/account' })
-      },
-      async clean() {
-        localStorage.clear()
-        localStorage.me = '/+'
-        await clear()
-        this.$router.push({ path: '/' })
+        this.nameless = true
       }
     }
   }

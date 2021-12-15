@@ -4,10 +4,6 @@
       v-if="!working"
       v-model:statement="statement"
       v-model:person="me" />
-    <aside v-if="!working">
-      <developer-tools v-if="!is_production" />
-      <sync v-model:statement="statement" :person="me" @active="sync_active" />
-    </aside>
   </main>
 </template>
 <script>
@@ -16,10 +12,6 @@
   import developer_tools from '@/components/developer-tools'
   import sync from '@/components/sync'
   export default {
-    components: {
-      sync,
-      'developer-tools': developer_tools
-    },
     data() {
       return {
         working: true,
