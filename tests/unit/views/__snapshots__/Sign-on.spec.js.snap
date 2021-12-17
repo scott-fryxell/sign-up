@@ -5,21 +5,8 @@ exports[`@/views/Sign-on.vue Renders Renders a form for a new user 1`] = `
   class="page"
   id="sign-on"
 >
-  <header>
-    <profile-as-figure-stub
-      editable="false"
-      person="[object Object]"
-      relations=""
-    />
-    <logo-as-link-stub />
-  </header>
-  <mobile-as-form-stub
-    person="[object Object]"
-  />
   <!--v-if-->
-  <footer>
-    <!--v-if-->
-  </footer>
+  <!--v-if-->
 </section>
 `;
 
@@ -28,16 +15,7 @@ exports[`@/views/Sign-on.vue Renders Renders a form for a returning user 1`] = `
   class="page"
   id="sign-on"
 >
-  <header>
-    <!--v-if-->
-    <logo-as-link-stub />
-  </header>
   <!--v-if-->
   <!--v-if-->
-  <footer>
-    <button>
-      Wipe
-    </button>
-  </footer>
 </section>
 `;

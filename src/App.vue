@@ -9,8 +9,6 @@
 <script>
   import firebase from 'firebase/app'
   import { get, set } from 'idb-keyval'
-  import developer_tools from '@/components/developer-tools'
-  import sync from '@/components/sync'
   export default {
     data() {
       return {

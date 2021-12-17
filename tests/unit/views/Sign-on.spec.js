@@ -1,5 +1,4 @@
 import { shallowMount } from '@vue/test-utils'
-import * as itemid from '@/use/itemid'
 import { clear } from 'idb-keyval'
 import Sign_on from '@/views/Sign-on'
 const person = {
@@ -32,32 +31,8 @@ describe('@/views/Sign-on.vue', () => {
     })
     it('Renders a form for a returning user', async () => {
       localStorage.me = '/+6282281823'
-      jest.spyOn(itemid, 'load').mockImplementation(() => {
-        return Promise.resolve(person)
-      })
       wrapper = await shallowMount(Sign_on)
       expect(wrapper.element).toMatchSnapshot()
-    })
-  })
-  describe('Computed', () => {
-    describe('.cleanable', () => {
-      it('Is cleanable if they are signed out', () => {
-        wrapper.vm.signed_in = true
-        expect(wrapper.vm.cleanable).toBe(false)
-      })
-      it('Is cleanable if me is defined', async () => {
-        localStorage.me = '/+1628228184'
-        expect(wrapper.vm.cleanable).toBe(true)
-      })
-      it('Is cleanable if there are a couple items in localStorage', async () => {
-        localStorage.statements = 'some statements would be here'
-        localStorage.person = 'a profile would be here'
-        expect(wrapper.vm.cleanable).toBe(true)
-      })
-      it('Is cleanable is there are items in local database', () => {
-        wrapper.vm.index_db_keys = ['/a/key']
-        expect(wrapper.vm.cleanable).toBe(true)
-      })
     })
   })
   describe('Methods', () => {
@@ -69,42 +44,9 @@ describe('@/views/Sign-on.vue', () => {
       })
     })
     describe('#signed_on', () => {
-      it('Loads the profile', async () => {
-        const load_spy = jest
-          .spyOn(itemid, 'load')
-          .mockImplementation(() => Promise.resolve(person))
-        await wrapper.vm.signed_on()
-        expect(load_spy).toBeCalled()
-        expect(wrapper.vm.nameless).toBe(false)
-        expect($router.push).toHaveBeenCalledTimes(1)
-        expect($router.push).toHaveBeenCalledWith({ path: '/' })
-      })
       it('Sets nameless to true if no profile is found', async () => {
-        const load_spy = jest
-          .spyOn(itemid, 'load')
-          .mockImplementation(() => Promise.resolve(null))
         await wrapper.vm.signed_on()
-        expect(load_spy).toBeCalled()
         expect(wrapper.vm.nameless).toBe(true)
-      })
-    })
-    describe('#new_person', () => {
-      it('Takes them to the account page', async () => {
-        await wrapper.vm.new_person()
-        expect(wrapper.vm.person.visited).toBeTruthy()
-        expect($router.push).toHaveBeenCalledTimes(1)
-        expect($router.push).toHaveBeenCalledWith({ path: '/account' })
-      })
-    })
-    describe('#clean', () => {
-      it('Wipes out the local storage', async () => {
-        const local_clear_spy = jest.spyOn(localStorage, 'clear')
-        await wrapper.vm.clean()
-        expect(local_clear_spy).toBeCalled()
-        expect(clear).toBeCalled()
-        expect(localStorage.me).toBe('/+')
-        expect($router.push).toHaveBeenCalledTimes(1)
-        expect($router.push).toHaveBeenCalledWith({ path: '/' })
       })
     })
   })
