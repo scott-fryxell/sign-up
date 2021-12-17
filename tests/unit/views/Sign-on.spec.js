@@ -1,13 +1,5 @@
 import { shallowMount } from '@vue/test-utils'
-import { clear } from 'idb-keyval'
 import Sign_on from '@/views/Sign-on'
-const person = {
-  id: '/+14151234356',
-  first_name: 'Scott',
-  last_name: 'Fryxell',
-  mobile: '4151234356',
-  avatar: 'avatars/5553338945763'
-}
 describe('@/views/Sign-on.vue', () => {
   let wrapper
   let $router
