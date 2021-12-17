@@ -5,7 +5,15 @@ exports[`@/views/Sign-on.vue Renders Renders a form for a new user 1`] = `
   class="page"
   id="sign-on"
 >
-  <!--v-if-->
+  <header>
+    <h3>
+       
+    </h3>
+    <!--v-if-->
+  </header>
+  <mobile-as-form-stub
+    person="[object Object]"
+  />
   <!--v-if-->
 </section>
 `;
@@ -15,7 +23,15 @@ exports[`@/views/Sign-on.vue Renders Renders a form for a returning user 1`] = `
   class="page"
   id="sign-on"
 >
-  <!--v-if-->
+  <header>
+    <h3>
+       
+    </h3>
+    <!--v-if-->
+  </header>
+  <mobile-as-form-stub
+    person="[object Object]"
+  />
   <!--v-if-->
 </section>
 `;
