@@ -1,7 +1,10 @@
 <template>
   <section id="sign-on" class="page">
+    <menu v-if="signed_in">
+      <button @click="sign_off">Sign off</button>
+    </menu>
     <mobile-as-form
-      v-if="person && !nameless"
+      v-if="!signed_in"
       v-model:person="person"
       @signed-on="signed_on" />
     <name-as-form v-if="nameless" v-model:person="person" @valid="new_person" />
@@ -22,7 +25,9 @@
     data() {
       return {
         nameless: false,
-        person: null
+        person: {
+          mobile: ''
+        }
       }
     },
     async created() {
@@ -31,16 +36,20 @@
     },
     methods: {
       auth_state(user) {
-        if (user) this.person.mobile = null
+        if (user && this.person) this.person.mobile = null
       },
       async signed_on() {
         this.nameless = true
+      },
+      sign_off() {
+        firebase.auth().signOut()
       }
     }
   }
 </script>
 <style lang="stylus">
   section#sign-on.page
+    margin:auto
     display: flex
     flex-direction: column
     justify-content: space-between
