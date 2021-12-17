@@ -1,8 +1,11 @@
 <template>
   <section id="sign-on" class="page">
-    <menu v-if="signed_in">
-      <button @click="sign_off">Sign off</button>
-    </menu>
+    <header>
+      <h3>{{ person.first_name }} {{ person.last_name }}</h3>
+      <menu v-if="signed_in">
+        <button @click="sign_off">Sign off</button>
+      </menu>
+    </header>
     <mobile-as-form
       v-if="!signed_in"
       v-model:person="person"
@@ -31,7 +34,6 @@
       }
     },
     async created() {
-      console.info('views:Sign-on')
       firebase.auth().onAuthStateChanged(this.auth_state)
     },
     methods: {
@@ -43,6 +45,9 @@
       },
       sign_off() {
         firebase.auth().signOut()
+      },
+      new_person() {
+        this.nameless = false
       }
     }
   }
@@ -53,17 +58,8 @@
     display: flex
     flex-direction: column
     justify-content: space-between
-    figure.profile
-      align-items: center
-      & > svg
-        border-radius: base-line * 2
-        width: base-line * 2
-        height: base-line * 2
-        border-color: red
-      & > figcaption
-        padding: 0 0 0 round((base-line / 4 ), 2)
-    svg.background
-      fill: red
+    & > header > h3
+      margin: 0
     form
     footer
       padding: base-line
@@ -73,6 +69,9 @@
       &:hover
         opacity: 1
     @media (min-width: pad-begins)
-      form
+      form, header
         align-self: center
+      header
+        width: 29rem
+        margin: base-line
 </style>
